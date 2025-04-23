@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Thread</title>
+  <style>
+    :root {
+      --primary-color: #69000e;
+      --secondary-color: #561C24;
+      --accent-color: #C7B7A3;
+      --text-color: var(--accent-color);
+      --hover-color: #E8D8C4;
+      --coffee-bg: #E8D8C4;
+      --coffee-border: #69000e;
+      --coffee-heading: #561C24;
+      --coffee-text: #69000e;
+      --coffee-accent: #C7B7A3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: var(--coffee-bg);
+      color: var(--text-color);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: var(--secondary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+
+    .title-container {
+      line-height: 1.2;
+    }
+
+    .title-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      font-style: italic;
+      color: #fff;
+    }
+
+    nav {
+      background-color: var(--primary-color);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      padding: 14px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .content {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    section {
+      display: none;
+      background-color: var(--coffee-bg);
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 40px;
+      border: 2px solid var(--coffee-border);
+      box-shadow: 0 2px 8px rgba(86,28,36,0.2);
+      color: var(--coffee-text);
+    }
+
+    section#home {
+      background-color: #fff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 40px;
+      margin-bottom: 0;
+      text-align: center;
+    }
+
+    section.active {
+      display: block;
+      animation: fadeIn 0.4s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    section h2 {
+      color: var(--coffee-heading);
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    section p {
+      line-height: 1.6;
+    }
+
+    section a,
+    section strong {
+      color: var(--coffee-accent);
+    }
+
+    .shorts-video,
+    .about-video {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 20px;
+      display: block;
+    }
+
+    #home-nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    #home-nav-buttons a {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 30px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #home-nav-buttons a:hover {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    #about p:first-of-type {
+      text-indent: 30px;
+    }
+
+    /* Styling for the Digital Scrapbook section */
+    .scrapbook-image {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+  </style>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+      const navLink = document.querySelector(`nav a[href="#${pageId}"]`);
+      if (navLink) navLink.classList.add('active');
+
+      const navBar = document.getElementById('main-nav');
+      navBar.style.display = (pageId === 'home') ? 'none' : 'flex';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const defaultPage = window.location.hash.substring(1) || 'home';
+      showPage(defaultPage);
+
+      document.querySelectorAll('nav a, #home-nav-buttons a, .title-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const pageId = link.getAttribute('href').substring(1);
+          history.pushState(null, '', `#${pageId}`);
+          showPage(pageId);
+        });
+      });
+    });
+
+    window.addEventListener('popstate', () => {
+      const pageId = window.location.hash.substring(1) || 'home';
+      showPage(pageId);
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo"></div>
+    <div class="title-container">
+      <a href="#home" class="title-link">
+        <div class="title">The Thread</div>
+        <div class="subtitle">"Linking Ideas, People, and Solutions"</div>
+      </a>
+    </div>
+  </header>
+
+  <nav id="main-nav">
+    <a href="#about">About Me</a>
+    <a href="#barangay">Barangay Profile</a>
+    <a href="#ict">ICT Gap Survey</a>
+    <a href="#scrapbook">Digital Scrapbook</a>
+    <a href="#shorts">Healthy Shorts</a>
+  </nav>
+
+  <div class="content">
+    <section id="home" class="active">
+      <div id="home-nav-buttons">
+        <a href="#about">About Me</a>
+        <a href="#barangay">Barangay Profile</a>
+        <a href="#ict">ICT Gap Survey</a>
+        <a href="#scrapbook">Digital Scrapbook</a>
+        <a href="#shorts">Healthy Shorts</a>
+      </div>
+    </section>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        <strong>Mariel A. Diwa</strong> is a committed and passionate second-year AB Communication student at NU Clark who strives to become a professional in the media industry. Her blog offers well-researched and insightful content that delves into the nuances of development communication. Through her writings, she aims to inspire, educate, and contribute to a deeper understanding of this critical field.
+      </p>
+      <video class="about-video" controls>
+        <source src="vid/about.mp4" type="video/mp4">
+        Your browser doesn’t support MP4 video.
+        <a href="vid/about.mp4">Download the video</a>.
+      </video>
+    </section>
+
+    <section id="barangay">
+      <h2>Barangay Profile</h2>
+      <div>
+        <img src="jpg/bprof_page-0001.jpg" class="scrapbook-image" alt="Page 1">
+        <img src="jpg/bprof_page-0002.jpg" class="scrapbook-image" alt="Page 2">
+        <img src="jpg/bprof_page-0003.jpg" class="scrapbook-image" alt="Page 3">
+        <img src="jpg/bprof_page-0004.jpg" class="scrapbook-image" alt="Page 4">
+      </div>
+    </section>
+
+    <section id="ict">
+      <h2>Basic ICT Gap Survey</h2>
+      <img src="jpg/ict_page-0001.jpg" class="scrapbook-image" alt="Page 1">
+      <img src="jpg/ict_page-0002.jpg" class="scrapbook-image" alt="Page 2">
+      <img src="jpg/ict_page-0003.jpg" class="scrapbook-image" alt="Page 3">
+      <img src="jpg/ict_page-0004.jpg" class="scrapbook-image" alt="Page 4">
+      <img src="jpg/ict_page-0005.jpg" class="scrapbook-image" alt="Page 5">
+      <img src="jpg/ict_page-0006.jpg" class="scrapbook-image" alt="Page 6">
+      <img src="jpg/ict_page-0007.jpg" class="scrapbook-image" alt="Page 7">
+    </section>
+
+    <section id="scrapbook">
+      <h2>Digital Scrapbook</h2>
+      <div>
+        <img src="jpg/digi_page-0001.jpg" class="scrapbook-image" alt="Page 1">
+        <img src="jpg/digi_page-0002.jpg" class="scrapbook-image" alt="Page 2">
+        <img src="jpg/digi_page-0003.jpg" class="scrapbook-image" alt="Page 3">
+        <img src="jpg/digi_page-0004.jpg" class="scrapbook-image" alt="Page 4">
+        <img src="jpg/digi_page-0005.jpg" class="scrapbook-image" alt="Page 5">
+        <img src="jpg/digi_page-0006.jpg" class="scrapbook-image" alt="Page 6">
+        <img src="jpg/digi_page-0007.jpg" class="scrapbook-image" alt="Page 7">
+        <img src="jpg/digi_page-0008.jpg" class="scrapbook-image" alt="Page 8">
+        <img src="jpg/digi_page-0009.jpg" class="scrapbook-image" alt="Page 9">
+        <img src="jpg/digi_page-0010.jpg" class="scrapbook-image" alt="Page 10">
+        <img src="jpg/digi_page-0011.jpg" class="scrapbook-image" alt="Page 11">
+        <img src="jpg/digi_page-0012.jpg" class="scrapbook-image" alt="Page 12">
+        <img src="jpg/digi_page-0013.jpg" class="scrapbook-image" alt="Page 13">
+        <img src="jpg/digi_page-0014.jpg" class="scrapbook-image" alt="Page 14">
+        <img src="jpg/digi_page-0015.jpg" class="scrapbook-image" alt="Page 15">
+        <img src="jpg/digi_page-0016.jpg" class="scrapbook-image" alt="Page 16">
+        <img src="jpg/digi_page-0017.jpg" class="scrapbook-image" alt="Page 17">
+        <img src="jpg/digi_page-0018.jpg" class="scrapbook-image" alt="Page 18">
+      </div>
+    </section>
+
+    <section id="shorts">
+      <h2>Healthy Shorts</h2>
+      <video class="shorts-video" controls>
+        <source src="vid/hshorts.mp4" type="video/mp4">
+        Your browser doesn’t support MP4 video.
+        <a href="vid/hshorts.mp4">Download the video</a>.
+      </video>
+    </section>
+  </div>
+</body>
+</html>
